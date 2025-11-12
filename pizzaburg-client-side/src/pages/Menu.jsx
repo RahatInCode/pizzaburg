@@ -1,81 +1,127 @@
-import React, { useEffect } from 'react';
-import useTabTitleChanger from '../components/useTabTitleChanger';
+// src/pages/Menu.jsx
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { FiSearch, FiFilter } from 'react-icons/fi';
+import Breadcrumb from '../components/common/Breadcrumb';
+import ProductCard from '../components/common/ProductCard';
+import products from '../assets/data/products'; // Changed
+import './Menu.css';
 
 const Menu = () => {
-       useTabTitleChanger();
-  useEffect(() => {
-    document.title = "Home | Pizzaburg 🍕";
-  }, []);
-    useEffect(() => {
-    document.title = "Menu | Pizzaburg 🍕";
-  }, []);
-    return (
-       <>
-      <div className='bg-base-300 min-h-screen pt-8'>
-          <div className=' bg-white rounded shadow-lg p-8 w-full mt-10'>
-            <h1 className='text-4xl font-bold'>🍕Pizzaburg</h1>
-            <p>Discover our delicious selection of pizzas, burgers, and more!</p>
-        </div>
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [sortBy, setSortBy] = useState('name');
 
-         <div className="flex flex-col lg:flex-row gap-6 mt-10 p-4">
-        {/* Sidebar */}
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full lg:w-64">
-          <h2 className="text-xl font-semibold mb-4">Filter</h2>
+  const categories = ['all', 'pizza', 'sides'];
 
-          {/* 🔍 Search */}
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-          />
+  const filteredProducts = products
+    .filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'name') return a.name.localeCompare(b.name);
+      if (sortBy === 'price-low') return a.price - b.price;
+      if (sortBy === 'price-high') return b.price - a.price;
+      if (sortBy === 'rating') return b.rating - a.rating;
+      return 0;
+    });
 
-          {/* 🧭 Categories */}
-          <div className="mb-4">
-            <h3 className="font-semibold mb-2">Categories</h3>
-            <div className="space-y-2">
-              <label className="flex items-center space-x-2">
-                <input type="checkbox" />
-                <span>🍕Pizza</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input type="checkbox" />
-                <span>🍔Burger</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input type="checkbox" />
-                <span>🍟Sides</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input type="checkbox" />
-                <span>🥂Drinks</span>
-              </label>
+  return (
+    <>
+      <Breadcrumb />
+      <div className="menu-page">
+        <div className="container">
+          <motion.div
+            className="menu-header"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="page-title">Our Menu</h1>
+            <p className="page-subtitle">
+              Explore our delicious selection of handcrafted pizzas and sides
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="menu-filters"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <div className="search-box">
+              <FiSearch className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search for pizzas..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label="Search products"
+              />
             </div>
+
+            <div className="filter-group">
+              <FiFilter className="filter-icon" />
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                aria-label="Filter by category"
+              >
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>
+                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sort-group">
+              <label htmlFor="sort">Sort by:</label>
+              <select
+                id="sort"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="name">Name</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Rating</option>
+              </select>
+            </div>
+          </motion.div>
+
+          <div className="products-count">
+            Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'}
           </div>
 
-          {/* 🔀 Sort By */}
-          <div>
-            <h3 className="font-semibold mb-2">Sort By</h3>
-            <select className="w-full px-3 py-2 border rounded">
-              <option>Relevance</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Popular</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-3xl font-bold mb-4">Our Menu</h1>
-          {/* Here you’d map menu items */}
-          <p>Menu items go here...</p>
+          {filteredProducts.length > 0 ? (
+            <motion.div
+              className="products-grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+            >
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              className="no-results"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h3>No products found</h3>
+              <p>Try adjusting your search or filter criteria</p>
+            </motion.div>
+          )}
         </div>
       </div>
-      </div>
-       
-       
-       </>
-    );
+    </>
+  );
 };
 
 export default Menu;

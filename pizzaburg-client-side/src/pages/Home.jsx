@@ -1,40 +1,24 @@
-import React, { useEffect } from 'react';
-import Hero from '../components/Hero';
-import CountdownTimer from '../components/CountDownTimer';
-import pizzaHero from "../assets/lotties/pizzaHero.json"
-import Lottie from 'lottie-react';
-import Testimonials from '../components/Testimonials';
-import useTabTitleChanger from '../components/useTabTitleChanger';
+// src/pages/Home.jsx
+import Hero from '../components/home/Hero';
+import MenuPreview from '../components/home/MenuPreview';
+import OurStory from '../components/home/OurStory';
+import WhyChooseUs from '../components/home/WhyChooseUs';
+import Testimonials from '../components/home/Testimonials';
+import BookTable from '../components/home/BookTable';
+import LatestNews from '../components/home/LatestNews';
 
 const Home = () => {
-   useTabTitleChanger();
-  useEffect(() => {
-    document.title = "Home | Pizzaburg 🍕";
-  }, []);
-  
- const offerEndTime = new Date();
-offerEndTime.setHours(23, 59, 59, 999);
-
   return (
-    <div>
+    <main>
       <Hero />
-        {/* Offer Section */}
-      <div className="bg-gradient-to-r from-orange-300 to-orange-500 text-white p-6">
-        <div className='flex justify-center'>
-          <Lottie animationData={pizzaHero} style={{ height: 150 , width:150}} />
-        </div>
-        <h1 className="text-3xl p-8 font-bold text-center">🔥Today's Special Offer!!</h1>
-        <h3 className="text-center">Get 50% off on all pizzas - Limited time only!</h3>
-        <p className="text-center mt-4">⏰ Offer ends in:</p>
-        <CountdownTimer targetTime={offerEndTime} />
-        <div className='flex justify-center mt-4'>
-            <button className='btn '>Grab now!</button>
-        </div>
-      </div>
-      <Testimonials></Testimonials>
-    </div>
+      <MenuPreview />
+      <OurStory />
+      <WhyChooseUs />
+      <Testimonials />
+      <BookTable />
+      <LatestNews />
+    </main>
   );
 };
 
 export default Home;
-

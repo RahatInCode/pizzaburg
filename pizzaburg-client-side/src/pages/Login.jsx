@@ -1,23 +1,20 @@
-// src/pages/Register.jsx
+// src/pages/Login.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
-import { FiMail, FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
-const Register = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const { register: registerUser } = useAuth();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const password = watch('password');
-
   const onSubmit = (data) => {
-    const result = registerUser(data.name, data.email, data.password);
+    const result = login(data.email, data.password);
     if (result.success) {
       navigate('/');
     }
@@ -33,12 +30,12 @@ const Register = () => {
           transition={{ duration: 0.8 }}
         >
           <img
-            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=1000&fit=crop"
-            alt="Fresh Pizza"
+            src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&h=1000&fit=crop"
+            alt="Delicious Pizza"
           />
           <div className="auth-image-overlay">
-            <h2>Join Pizzaburg Family!</h2>
-            <p>Create an account and start your pizza journey</p>
+            <h2>Welcome Back to Pizzaburg!</h2>
+            <p>Sign in to order your favorite pizzas</p>
           </div>
         </motion.div>
 
@@ -53,32 +50,11 @@ const Register = () => {
               <Link to="/" className="auth-logo">
                 🍕 Pizzaburg
               </Link>
-              <h1>Create Account</h1>
-              <p>Sign up to get started with Pizzaburg</p>
+              <h1>Sign In</h1>
+              <p>Enter your credentials to access your account</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <div className="input-with-icon">
-                  <FiUser className="input-icon" />
-                  <input
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    {...register('name', {
-                      required: 'Name is required',
-                      minLength: {
-                        value: 3,
-                        message: 'Name must be at least 3 characters'
-                      }
-                    })}
-                    className={errors.name ? 'error' : ''}
-                  />
-                </div>
-                {errors.name && <span className="error-message">{errors.name.message}</span>}
-              </div>
-
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <div className="input-with-icon">
@@ -107,7 +83,7 @@ const Register = () => {
                   <input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Create a password"
+                    placeholder="Enter your password"
                     {...register('password', {
                       required: 'Password is required',
                       minLength: {
@@ -129,55 +105,39 @@ const Register = () => {
                 {errors.password && <span className="error-message">{errors.password.message}</span>}
               </div>
 
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <div className="input-with-icon">
-                  <FiLock className="input-icon" />
-                  <input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Confirm your password"
-                    {...register('confirmPassword', {
-                      required: 'Please confirm your password',
-                      validate: value => value === password || 'Passwords do not match'
-                    })}
-                    className={errors.confirmPassword ? 'error' : ''}
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    aria-label="Toggle confirm password visibility"
-                  >
-                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
-                </div>
-                {errors.confirmPassword && <span className="error-message">{errors.confirmPassword.message}</span>}
+              <div className="form-options">
+                <label className="checkbox-label">
+                  <input type="checkbox" />
+                  <span>Remember me</span>
+                </label>
+                <Link to="/forgot-password" className="forgot-link">
+                  Forgot Password?
+                </Link>
               </div>
 
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  {...register('terms', {
-                    required: 'You must accept the terms and conditions'
-                  })}
-                />
-                <span>
-                  I agree to the <Link to="/terms">Terms & Conditions</Link>
-                </span>
-              </label>
-              {errors.terms && <span className="error-message">{errors.terms.message}</span>}
-
               <button type="submit" className="btn btn-primary btn-block">
-                Create Account
+                Sign In
               </button>
             </form>
 
+            <div className="auth-divider">
+              <span>Demo Credentials</span>
+            </div>
+
+            <div className="demo-credentials">
+              <div className="demo-box">
+                <strong>Admin:</strong> admin@pizzaburg.com / admin123
+              </div>
+              <div className="demo-box">
+                <strong>User:</strong> user@example.com / user123
+              </div>
+            </div>
+
             <div className="auth-footer">
               <p>
-                Already have an account?{' '}
-                <Link to="/login" className="auth-link">
-                  Sign In
+                Don't have an account?{' '}
+                <Link to="/register" className="auth-link">
+                  Sign Up
                 </Link>
               </p>
             </div>
@@ -188,4 +148,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

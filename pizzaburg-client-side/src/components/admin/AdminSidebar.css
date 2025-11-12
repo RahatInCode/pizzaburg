@@ -1,0 +1,95 @@
+/* src/components/admin/AdminSidebar.css */
+.admin-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+  color: var(--white);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+  padding: 30px 20px;
+  border-bottom: 1px solid rgba(255, 179, 0, 0.2);
+}
+
+.sidebar-header h2 {
+  font-family: 'Lobster Two', cursive;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 25px;
+  color: #ccc;
+  text-decoration: none;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 179, 0, 0.1);
+  color: var(--primary-color);
+}
+
+.sidebar-link.active {
+  background: rgba(255, 179, 0, 0.15);
+  border-left-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.link-icon {
+  font-size: 1.3rem;
+}
+
+.link-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 179, 0, 0.2);
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 968px) {
+  .admin-sidebar {
+    z-index: 2000;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+  }
+}
