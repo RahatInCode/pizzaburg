@@ -2,23 +2,8 @@
 @plugin "daisyui";
 
 
-@keyframes floatAround {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translate(40px, -60px) rotate(20deg);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translate(0, 0) rotate(-15deg);
-    opacity: 0.3;
-  }
-}
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-.floating-emoji {
-  animation: floatAround infinite ease-in-out;
-  position: absolute;
-  z-index: 0;
+.pizzaro-font {
+  font-family: 'Pacifico', cursive;
 }

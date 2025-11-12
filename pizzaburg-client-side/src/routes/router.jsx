@@ -5,6 +5,9 @@ import Menu from "../pages/Menu";
 import Offers from "../pages/Offers";
 import TrackOrder from "../pages/TrackOrder";
 import Dashboard from "../pages/Dashboard";
+import Register from "../pages/Register";
+import SignIn from "../pages/SignIn";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +31,20 @@ const router = createBrowserRouter([
         Component: TrackOrder,
       },
       {
-        path: "Dashboard", // ✅ fixed: removed slash, consistent with others
+        path: "Dashboard", 
         Component: Dashboard,
+      },
+      {
+        path: "register",
+        Component:Register
+      },
+      {
+        path: "signin",
+        Component:SignIn
+      },
+      {
+        path: "*",
+        Component:ErrorPage
       }
     ],
   }

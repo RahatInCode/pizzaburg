@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react'
-import SignInForm from '../components/SignInForm';
+import RegisterForm from '../components/RegisterForm'
 import useTabTitleChanger from '../components/useTabTitleChanger';
 
-
-const SignIn = () => {
+const Register = () => {
      useTabTitleChanger();
   useEffect(() => {
     document.title = "Home | Pizzaburg 🍕";
   }, []);
   useEffect(() => {
-    document.title = "Sign In | Pizzaburg 🍕";
+    document.title = "Register | Pizzaburg 🍕";
   }, []);
   return (
     <div>
-      <SignInForm />
+      <RegisterForm />
     </div>
   )
 }
 
-export default SignIn;
+export default Register;
